@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::select('id','title','description','image')->get();
+        return Product::select('id','title','description','image', 'price', 'category')->get();
     }
 
     /**
@@ -42,7 +42,9 @@ class ProductController extends Controller
         $request->validate([
             'title'=>'required',
             'description'=>'required',
-            'image'=>'required|image'
+            'image'=>'required|image|mimes:jpeg,jpg,png,gif|max:8096',
+            'price'=>'required',
+            'category'=>'required'
         ]);
 
         try{
@@ -97,7 +99,9 @@ class ProductController extends Controller
         $request->validate([
             'title'=>'required',
             'description'=>'required',
-            'image'=>'nullable'
+            'image'=>'nullable|image|mimes:jpeg,jpg,png,gif|max:8096',
+            'price'=>'required',
+            'category'=>'required'
         ]);
 
         try{

@@ -67,6 +67,8 @@ export default function List() {
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>Image</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -80,6 +82,8 @@ export default function List() {
                                                 <td>
                                                     <img width="50px" alt='' src={appUrl.image + row.image} />
                                                 </td>
+                                                <td>{row.price}</td>
+                                                <td>{row.category}</td>
                                                 <td>
                                                     <Link to={`/product/edit/${row.id}`} className='btn btn-success me-2'>
                                                         Edit

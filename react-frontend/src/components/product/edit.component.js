@@ -11,12 +11,29 @@ import appUrl from '../../config.js';
 export default function EditUser() {
   const navigate = useNavigate();
 
-  const { id } = useParams()
+  const { id } = useParams();
 
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [image, setImage] = useState(null)
-  const [validationError,setValidationError] = useState({})
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
+  const [price, setPrice] = useState(0);
+  const [category, setCategory] = useState("");
+  const [validationError,setValidationError] = useState({});
+
+  const isValidFloat = (value) => {
+    const floatValue = parseFloat(value);
+    return !isNaN(floatValue);
+  };
+
+  const handlePriceChange = (event) => {
+    const inputValue = event.target.value;
+    if (isValidFloat(inputValue)) {
+      setPrice(parseFloat(inputValue));
+      setValidationError({ ...validationError, price: '' });
+    } else {
+      setValidationError({ ...validationError, price: 'Please enter a valid float number.' }); // Set validation error for the price field
+    }
+  };
 
   useEffect(()=>{
     fetchProduct();
@@ -24,9 +41,11 @@ export default function EditUser() {
 
   const fetchProduct = async () => {
     await axios.get(`${appUrl.api}products/${id}`).then(({data})=>{
-      const { title, description } = data.product
+      const { title, description, price, category } = data.product
       setTitle(title)
       setDescription(description)
+      setPrice(price)
+      setCategory(category)
     }).catch(({response:{data}})=>{
       Swal.fire({
         text:data.message,
@@ -46,6 +65,8 @@ export default function EditUser() {
     formData.append('_method', 'PATCH');
     formData.append('title', title)
     formData.append('description', description)
+    formData.append('price', price)
+    formData.append('category', category)
     if(image!==null){
       formData.append('image', image)
     }
@@ -122,6 +143,36 @@ export default function EditUser() {
                         <Form.Control type="file" onChange={changeHandler} />
                       </Form.Group>
                     </Col>
+                  </Row>
+                  <Row> 
+                    <Col>
+                      <Form.Group controlId="Price">
+                          <Form.Label>Price</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={price}
+                            onChange={handlePriceChange}
+                            isInvalid={!!validationError.price}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {validationError.price}
+                          </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>  
+                  </Row>
+                  <Row> 
+                    <Col>
+                      <Form.Group controlId="Category">
+                          <Form.Label>Category</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={category}
+                            onChange={(event)=>{
+                              setCategory(event.target.value)
+                            }}
+                          />
+                      </Form.Group>
+                    </Col>  
                   </Row>
                   <Button variant="primary" className="mt-2" size="lg" block="block" type="submit">
                     Update
