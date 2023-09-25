@@ -1,4 +1,4 @@
-## Build a Basic CRUD App with Laravel 8 and React.js
+## Laravel products api, php v8.2 required
 
 #### Install Packages
 
@@ -12,7 +12,7 @@ composer install
 cp .env.example .env
 ```
 
-#### Set Database Detail
+#### Set Database Detail, Configure your local connection
 
 ```
 DB_CONNECTION=mysql
@@ -23,14 +23,20 @@ DB_USERNAME=
 DB_PASSWORD=
 ```
 
+#### Run database migrations
+
+```
+php artisan migrate
+```
+
+#### Link storage folder for file uploads
+
+```
+php artisan storage:link
+```
+
 #### Start Laravel Project
 
 ```
 php artisan serve
 ```
-
-# Connect with Us
-
--   [Site](https://techvblogs.com/?ref=githubrepo)
--   [Twitter](https://twitter.com/techvblogs)
--   [Facebook](https://facebook.com/techvblogs)
